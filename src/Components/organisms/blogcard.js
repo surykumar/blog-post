@@ -9,7 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { red } from '@material-ui/core/colors';
-import {Link, Redirect, useRouteMatch} from "react-router-dom";
+import {Link, useRouteMatch} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -47,8 +47,7 @@ const useStyles = makeStyles((theme) => ({
         }
     })
 )
-
-const ITEM_HEIGHT = 48;
+const IMAGE_NOT_AVAILABLE = "https://bostonparkingspaces.com/wp-content/themes/classiera/images/nothumb/nothumb370x300.png"
 function BlogCard(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -82,7 +81,6 @@ function BlogCard(props) {
         }
     ];
     const handleMenuAction = (action)=> {
-        console.log("props of blogcard is" + props);
         if(action == "Preview") {
             props.history.push(`/blogs/preview/${post.id}`);
         }
@@ -93,13 +91,12 @@ function BlogCard(props) {
             props.handleDeletePost(post.id);
         }
         console.log("Handle menu actions" + action);
-        // console.log("Event of menu actions" + e);
     }
     return (
         <Card className={classes.root}>
             <CardMedia
                 className={classes.cover}
-                image={post.image ? post.image :"https://bostonparkingspaces.com/wp-content/themes/classiera/images/nothumb/nothumb370x300.png"}
+                image={post.image ? post.image :IMAGE_NOT_AVAILABLE}
                 title={post.title}
             />
             <div className={classes.details}>
@@ -120,12 +117,6 @@ function BlogCard(props) {
                                 keepMounted
                                 open={open}
                                 onClose={handleClose}
-                                PaperProps={{
-                                    style: {
-                                        // maxHeight: ITEM_HEIGHT * 4.5,
-                                        // width: '20ch',
-                                    },
-                                }}
                             >
                                 {options.map((option) => (
                                     <MenuItem key={option} onClick={(e)=>handleMenuAction(option.name)}>
@@ -143,8 +134,8 @@ function BlogCard(props) {
                         {post.title}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {post.text.length > 200 ?
-                            post.text.slice(0, 200) + " ..."
+                        {post.text.length > 80 ?
+                            post.text.slice(0, 80) + " ..."
                             : post.text
                         }
                     </Typography>

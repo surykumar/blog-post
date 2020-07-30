@@ -22,7 +22,6 @@ server.get('/signin',(req, res) => {
         responseData.profile = user.profile;
         responseData.posts=posts;
         res.send(responseData);
-        // res.locals.data = user;
     }
 })
 server.post('/createpost',(req, res) => {
@@ -31,7 +30,7 @@ server.post('/createpost',(req, res) => {
     const user = router.db.get('users').getById(email).value();
     const posts = router.db.get('posts').value().filter((data)=>data.user_id==email);
     if(user == null) {
-        res.status(404).send({error: "User does not found"});
+        res.status(404).send({error: "User not found"});
     }
     else {
         if(user.password != password) {
@@ -42,24 +41,15 @@ server.post('/createpost',(req, res) => {
         responseData.profile = user.profile;
         responseData.posts=posts;
         res.send(responseData);
-        // res.locals.data = user;
     }
 })
 server.use(jsonServer.bodyParser)
 server.use((req, res, next) => {
-    if (req.method === 'POST') {
+    if (req.method === 'POST'|| req.method === 'PUT') {
         req.body.createdAt = Date.now()
     }
-    // Continue to JSON Server router
     next()
 })
-// server.use((req, res, next) => {
-//     if (isAuthorized(req)) { // add your authorization logic here
-//         next() // continue to JSON Server router
-//     } else {
-//         res.sendStatus(401)
-//     }
-// })
 
 server.use(router)
 server.listen(3004, () => {

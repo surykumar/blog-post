@@ -1,15 +1,21 @@
 import React from "react";
+import {Link, useRouteMatch} from "react-router-dom";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    linkButton: {
+        color:"white"
+    }
+}));
 
 function Info(props) {
+    const classes = useStyles();
+    let match = useRouteMatch();
     return (
         <div>
-            <span>
-            Hi, my name is Anthony Doe. Briefly introduce yourself here. You can also provide a link to the about page.
-            </span>
+            <span>{props.info.length > 100? `${props.info.slice(0,100)} ...`:props.info}</span>
             <br/>
-            <a href={"www.google.com"} style={{color:"white"}}>
-                Find out more about me
-            </a>
+            <Link className={classes.linkButton} to={`${match.url}/about`}>Find out more about me</Link>
         </div>
     )
 }

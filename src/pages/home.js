@@ -5,5 +5,4 @@ const Home = (props) => {
         <p>Hello You are on Home page!</p>
     )
 }
-
 export default Home;

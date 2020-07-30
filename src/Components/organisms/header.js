@@ -8,7 +8,6 @@ const useStyle = makeStyles((theme)=>({
     root: {
         left:"260px",
         backgroundColor: theme.palette.primary.main,
-        // background: '#5D6BA7',
         color: '#fff',
         width:'inherit'
     },
@@ -26,7 +25,6 @@ function Header(props) {
             <AppBar className={classes.root}>
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
-                        {/*News*/}
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>

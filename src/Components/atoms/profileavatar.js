@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 function ProfileAvatar(props) {
     const classes = useStyles();
     return (
-            <Avatar alt="Remy Sharp" src={props.avatar} className={classes.large} />
+            <Avatar alt={`${props.firstName} ${props.lastName}`} src={props.avatar} className={classes.large} />
     )
 }
 export default ProfileAvatar;

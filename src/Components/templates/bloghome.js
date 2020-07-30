@@ -12,7 +12,6 @@ const useStyles = makeStyles({
          top: '65px',
          position:"absolute",
          width:'85%',
-         // height:'100%'
      }
 })
 function BlogHome(props) {

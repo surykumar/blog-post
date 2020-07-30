@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Main from "./pages/main"
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
@@ -93,7 +92,7 @@ function App() {
     }
   return (
       <MuiThemeProvider theme={theme}>
-        <Main _user={_user} allowLogin={true}/>
+        <Main _user={_user} allowLogin={false}/>
       </MuiThemeProvider>
   );
 }

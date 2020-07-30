@@ -41,10 +41,10 @@ function LeftNav(props) {
                 {props.user.firstName}'s Blog
             </h2>
             <div className={classes.avatar}>
-                <ProfileAvatar avatar={props.user.avatar}/>
+                <ProfileAvatar avatar={props.user.avatar} firstName={props.user.firstName} lastName={props.user.lastName}/>
             </div>
             <div className={classes.info}>
-                <Info/>
+                <Info info={props.user.info}/>
             </div>
             <ConnectButtons/>
             <hr style={{width:"90%"}}/>

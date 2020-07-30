@@ -5,7 +5,6 @@ import Blogs from "./blogs";
 import Signin from "./signin";
 import Signup from "./signup";
 import Home from "./home";
-import {text} from "@storybook/addon-knobs";
 
 function Main(props) {
     let isLogin = props.allowLogin;
@@ -64,20 +63,20 @@ function Main(props) {
             }
         ]
     }
-    // const [user, setUser] = useState(props.allowLogin ? props._user.profile:{});
-    // const [posts, setPosts] = useState(props.allowLogin ? props._user.posts:[]);
-    const [user, setUser] = useState(_user.profile);
-    const [posts, setPosts] = useState(_user.posts);
+    const [user, setUser] = useState(props.allowLogin ? props._user.profile:{});
+    const [posts, setPosts] = useState(props.allowLogin ? props._user.posts:[]);
+    // const [user, setUser] = useState(_user.profile);
+    // const [posts, setPosts] = useState(_user.posts);
     const handleSignup = (e)=> {
         alert("user created successfully!");
     }
-    useEffect(() => {
-        // Update the document title using the browser API
-        console.log("is logged in is" + props.allowLogin);
-        setIsLoggedIn(props.allowLogin);
-        setUser(props._user.profile);
-        setPosts(props._user.posts);
-    });
+    // useEffect(() => {
+    //     // Update the document title using the browser API
+    //     console.log("is logged in is" + props.allowLogin);
+    //     setIsLoggedIn(props.allowLogin);
+    //     setUser(props._user.profile);
+    //     setPosts(props._user.posts);
+    // });
     const handleSignin = (e)=> {
         e.preventDefault();
         const url = `http://localhost:3004/signin?email=${e.target.email.value}&password=${e.target.password.value}`
@@ -121,8 +120,6 @@ function Main(props) {
             })
             .catch(err=> {
                 console.log(err.response.error);
-                // setPosts({});
-                // setIsLoggedIn(false);
             })
         alert("post submitted successfully!");
     }
@@ -144,8 +141,6 @@ function Main(props) {
             })
             .catch(err=> {
                 console.log(err.response.error);
-                // setPosts({});
-                // setIsLoggedIn(false);
             })
         alert("post edited successfully!");
     }
@@ -166,8 +161,7 @@ function Main(props) {
                         }
                     ]
                 }
-            ],
-            "createdAt": Date.now()
+            ]
         }
         return _body;
     }
@@ -178,17 +172,12 @@ function Main(props) {
                 console.log("response after deleting post!", resp);
                 if(resp.status == 200){
                     const filteredPost = posts.filter(post=> post.id !=id);
-                    // user.posts = filteredPost;
                     setPosts(filteredPost);
-                    // user.posts.push(resp.data);
-                    // setUser(user);
                     setIsLoggedIn(true);
                 }
             })
             .catch(err=> {
                 console.log(err.response.error);
-                // setPosts([]);
-                // setIsLoggedIn(false);
             })
         alert("post submitted!");
     }

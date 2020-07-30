@@ -1,38 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { useParams } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from '@material-ui/core/IconButton';
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import GitHubIcon from "@material-ui/icons/GitHub";
-import CodeIcon from '@material-ui/icons/Code';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "50%",
         margin: "3% auto",
-    },
-    textField: {
-        // marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: '100%',
-        fontSize: '2rem',
-        fontFamily: "Arial",
-    },
-    textAreaField: {
-        // marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: '100%',
-        fontSize: "1rem",
-        fontFamily: "Arial",
-        letterSpacing: "0.095rem"
     },
     imgPreview: {
         textAlign: "center",
@@ -49,11 +25,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(3),
         display:"flex",
         textAlign:"justify"
-    },
-    resize:{
-        fontSize: "2rem"
-    },
-
+    }
 }));
 
 function PostPreview(props) {
@@ -97,45 +69,16 @@ function PostPreview(props) {
                         <Typography color="secondary" variant="h4">
                             {post.title}
                         </Typography>
-                        {/*<TextField*/}
-                        {/*    required*/}
-                        {/*    id="post_title"*/}
-                        {/*    value={post.title}*/}
-                        {/*    className={classes.textField}*/}
-                        {/*    placeholder="Add post title..."*/}
-                        {/*    margin="normal"*/}
-                        {/*    InputProps={{*/}
-                        {/*        shrink: true,*/}
-                        {/*        classes: {*/}
-                        {/*            input: classes.resize,*/}
-                        {/*        }*/}
-                        {/*    }}*/}
-                        {/*/>*/}
                     </div>
                     <div className={classes.body}>
                         <Typography color="secondary" variant="body1">
                             {post.text}
                         </Typography>
-                        {/*<TextareaAutosize value={post.text} id="post_body" required className={classes.textAreaField} aria-label="minimum height"*/}
-                        {/*                  rowsMin={20} placeholder="Start writing your post here. Add images and more."/>*/}
                     </div>
                     <div className={classes.body}>
-                        {/*<Typography variant="subtitle1">*/}
-                        {/*    Image*/}
-                        {/*</Typography>*/}
-                        {/*<input*/}
-                        {/*    accept="image/*"*/}
-                        {/*    className={classes.input}*/}
-                        {/*    id="post_images"*/}
-                        {/*    type="file"*/}
-                        {/*    onChange={_handleImageChange}*/}
-                        {/*    onClick={event => {*/}
-                        {/*        event.target.value = null;*/}
-                        {/*    }}*/}
-                        {/*/>*/}
                         <div style={{width:"100%"}}>
                             {post.image &&
-                            <img className={classes.imgPreview} src={post.image}/>
+                                <img className={classes.imgPreview} src={post.image}/>
                             }
                         </div>
                     </div>

@@ -1,0 +1,26 @@
+  {
+    "user_id": "suryakantkumar4455@gmail.com",
+    "title": "Create post -> stubbed in fixtures!",
+    "text": "This post is about Cypress fixtures. Its work like dummy data storage",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsqvi4gADrnGPAhbmSVXCTJjT4foL72xMglA&usqp=CAU",
+    "comments": [
+      {
+        "user_id": "",
+        "comment": "",
+        "replies": [
+          {
+            "user_id": "",
+            "reply": ""
+          }
+        ]
+      }
+    ],
+    "createdAt": 1596479153750,
+    "id": 2,
+    "user": {
+      "given_name": "Suryakant",
+      "family_name": "Kumar",
+      "bio": "Hi,This is Surya Kant kumar. I am a software developer at Zemoso technology!",
+      "picture": ""
+    }
+  }

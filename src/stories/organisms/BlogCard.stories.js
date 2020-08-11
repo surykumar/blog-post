@@ -1,0 +1,82 @@
+import React from "react";
+import {action} from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
+import {withKnobs, text, boolean, color, number} from "@storybook/addon-knobs";
+import { object } from '@storybook/addon-knobs';
+import {MuiThemeProvider, createMuiTheme, Button} from '@material-ui/core';
+import StoryRouter from 'storybook-react-router';
+import BlogCard from "../../Components/organisms/BlogCard";
+
+const userDefaultValue = {
+    given_name: "",
+    family_name: "",
+    picture: ""
+}
+const postDefaultValue = {
+    reactTestDemo: '',
+    text:'',
+    image: '',
+    createdAt:''
+}
+const stories = storiesOf("Components/organism", module)
+    .addDecorator(withKnobs)
+    .addDecorator(StoryRouter())
+    .add("BlogCard", ()=>{
+        const theme = createMuiTheme({
+            palette: {
+                primary: {
+                    main: color("Primary","#54B689")
+                },
+                secondary:{
+                    main: color("Secondary","#505050")
+                },
+                neutral: {
+                    main: "#f5f5f5"
+                }
+            },
+            typography: {
+                subtitle1: {
+                    fontSize: "1.5rem",
+                },
+                subtitle2: {
+                    fontSize: "1.5rem",
+                },
+                button: {
+                    fontSize: 15,
+                    textTransform: "none"
+                },
+                h4: {
+                    fontSize: text("Post reactTestDemo fontSize", "1.15rem"),
+                    fontFamily: text("Post reactTestDemo fontFamily", "Roboto san-serif"),
+                    fontWeight: 500,
+                    lineHeight: 1.2,
+                },
+                h5: {
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    lineHeight: 1.2,
+                },
+                h3: {
+                    fontSize: "1.75rem",
+                    fontWeight: 500,
+                },
+                body1: {
+                    fontSize: "1rem",
+                    fontFamily: '"Roboto" "san-serif"',
+                    "-webkit-font-smoothing": "antialiased",
+                    "-moz-osx-font-smoothing": "grayscale",
+                },
+                body2: {
+                    fontSize: text("Post Body fontSize", "1rem"),
+                    fontFamily: text("Post Body fontFamily", "Roboto san-serif"),
+                    lineHeight: 1.5,
+                }
+            },
+        })
+        const post = object('Post', postDefaultValue, "GROUP-ID1");
+        const user = object('User', userDefaultValue, "GROUP-ID2");
+        return(
+            <MuiThemeProvider theme={theme}>
+                <BlogCard post={post} user={user}  authorized handleDeletePost={action("Deleted")} handleEditPost={action(`Post id$ {id} editing..`)} handlePreviewPost={action(`Post id$ {id} Previewing..`)}/>
+            </MuiThemeProvider>)
+    })

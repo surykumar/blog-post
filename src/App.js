@@ -1,20 +1,23 @@
 import React from 'react';
 import './App.css';
-import Main from "./pages/main"
+import Main from "./pages/Main"
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
-import { red } from "@material-ui/core/colors";
+import {grey, red} from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
     palette: {
       primary: {
-          main:"#5e6ca8"
+          main:"#54B689"
       },
-        secondary:{
-          main:"#505050"
-        },
-        neutral: {
-            main:"#24b620"
-        }
+    secondary:{
+      main:"#505050"
+    },
+    neutral: {
+        main: "#f5f5f5"
+    },
+    header: {
+      main: "#808080"
+    }
     },
     typography: {
         // fontFamily: 'Arial',
@@ -25,15 +28,47 @@ const theme = createMuiTheme({
             // lineHeight: 1.334,
             // letterSpacing: "0em"
         },
-        // body1: {
-        //     fontWeight: 500,
-        // },
+        subtitle2: {
+            fontSize: "1.5rem",
+        },
         button: {
             fontSize: 15,
             // fontStyle: 'Arial',
             textTransform: "none"
+        },
+        h4: {
+            fontSize: "1.15rem",
+            fontWeight: 500,
+            lineHeight: 1.2,
+        },
+        h5: {
+            fontSize: "1rem",
+            fontFamily: "Arial",
+            fontWeight: 500,
+            lineHeight: 1.2,
+        },
+        h3: {
+            fontSize: "1.75rem",
+            fontWeight: 500,
+        },
+        body1: {
+            fontSize: "1rem",
+            fontFamily: '"Roboto" "san-serif"',
+            "-webkit-font-smoothing": "antialiased",
+            "-moz-osx-font-smoothing": "grayscale",
+        },
+        body2: {
+            lineHeight: 1.5,
+        },
+        iconButton: {
+            fontSize: 25
+        },
+        h2: {
+            fontSize: "2rem",
+            fontFamily: "Arial"
         }
     },
+    spacing: factor => `${0.25 * factor}rem`
 })
 
 function App() {

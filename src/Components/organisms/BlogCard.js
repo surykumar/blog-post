@@ -20,6 +20,11 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import {Grid} from "@material-ui/core";
 import {Router} from "@material-ui/icons";
+import {useDispatch, useSelector} from "react-redux";
+import {deletePost} from "../../actions/postActions";
+import Disqus from "disqus-react";
+import InsertCommentIcon from '@material-ui/icons/InsertComment';
+import CommentCount from "../molecules/CommentCount";
 
 const useStyles = makeStyles((theme) => ({
         root: {
@@ -28,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
             // width:'50%',
             width: 324,
             height:400,
-            border: "1px solid lightgrey"
+            border: "1px solid lightgrey",
+            position: "relative"
         },
         details: {
             display: 'flex',
@@ -57,11 +63,16 @@ const useStyles = makeStyles((theme) => ({
             paddingTop: theme.spacing(1),
             height: "200px"
         },
-        footer: {
+        favoriteIcon: {
+            position: "absolute",
+            right: "1rem"
+            // paddingBottom:"0.5rem"
+        },
+        favoriteIconStyles: {
             fontSize: "0.75rem",
             color: "grey",
-            paddingLeft: "6.75rem"
-            // paddingBottom:"0.5rem"
+            padding: "2px",
+            display: "flex"
         }
     })
 )
@@ -72,7 +83,8 @@ function BlogCard(props) {
     const open = Boolean(anchorEl);
     const post = props.post;
     const user = props.user;
-    let match = useRouteMatch();
+    const dispatch = useDispatch();
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -114,12 +126,12 @@ function BlogCard(props) {
             props.handleEditPost(post.id);
         }
         else if(action == "Delete") {
-            props.handleDeletePost(post.id);
+            dispatch(deletePost(post.id));
+            handleClose();
         }
     }
     return (
         <Card className={classes.root}>
-            <div >
                 <CardHeader className={classes.header}
                     avatar={
                         <Avatar aria-label={`${user.given_name} ${user.family_name}`} src={user.picture} className={classes.avatar}>
@@ -154,7 +166,7 @@ function BlogCard(props) {
                     image={post.image ? post.image :IMAGE_NOT_AVAILABLE}
                     title={post.title}
                 />
-                <CardContent style={{padding:"8px"}}>
+                <CardContent style={{padding:"8px", height: "65px"}}>
                     <Typography variant="h4" color="primary">
                         {post.title.length > 30 ?
                             post.title.slice(0, 30) + " ..."
@@ -168,13 +180,19 @@ function BlogCard(props) {
                         }
                     </Typography>
                 </CardContent>
-                <div className={classes.header}>
-                    <Link className={classes.link} to={props.authorized ?`blogs/preview/${post.id}`:`/preview/${post.id}`}>Read more →</Link>
-                    <Typography className={classes.footer}>
-                        <FavoriteIcon style={{paddingLeft:"2.5rem"}} fontSize="inherit" color="primary"/> <span style={{paddingLeft:"3px"}}>4999</span>
+            <Grid className={classes.header}>
+                <Link className={classes.link} to={props.authorized ?`${user.uuid}/preview/${post.id}`:`/preview/${post.id}`}>Read more →</Link>
+                <Grid className={classes.favoriteIcon}>
+                    <Typography className={classes.favoriteIconStyles}>
+                        <Grid style={{paddingTop:"1px"}}>
+                            <InsertCommentIcon fontSize="inherit" color="primary"/>
+                        </Grid>
+                        <span style={{paddingLeft:"3px"}}>
+                            <CommentCount post={props.post}/>
+                        </span>
                     </Typography>
-                </div>
-            </div>
+                </Grid>
+            </Grid>
         </Card>
     )
 }

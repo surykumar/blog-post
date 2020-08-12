@@ -8,6 +8,7 @@ import {Grid} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import BlogBodyHeader from "../molecules/BlogBodyHeader";
 import BlogProfile from "./BlogProfile";
+import {useSelector} from "react-redux";
 const useStyles = makeStyles({
     subscribe: {
         padding: '2rem 0',
@@ -22,26 +23,27 @@ const useStyles = makeStyles({
 function BlogBody(props) {
     const match = useRouteMatch();
     const classes = useStyles();
+    const posts = useSelector(state=> state.posts);
     return (
         <Grid>
             <Switch>
                 <Route path={`${match.path}/:userId/create`} render={(prop)=>
-                    <CreatePost {...prop} user={props.user} user={props.user} handleCreatePost={props.handleCreatePost}/> } />
+                    <CreatePost {...prop} /> } />
                 <Route path={`${match.path}/:userId/edit/:postId`} render={(prop)=>
-                    <CreatePost {...prop} user={props.user} edit="true" user={props.user} posts={props.posts} handleEditPost={props.handleEditPost}/> } />
+                    <CreatePost {...prop} edit="true" /> } />
                 <Route path={`${match.path}/:userId/preview/:postId`}>
-                    <PostPreview user={props.user} posts={props.posts}/>
+                    <PostPreview />
                 </Route>
                 <Route path={`${match.path}/:userId/profile`} render={(prop)=>
-                    <BlogProfile {...prop} user={props.user} handleUpdateProfile={props.handleUpdateProfile}/>} />
+                    <BlogProfile {...prop} />} />
                 <Route path={`/blogs/:userId`} render={(prop)=>
                     <Grid>
                         <Grid className={classes.subscribe}>
                             <BlogBodyHeader/>
                         </Grid>
                             <Grid style={{margin:"0 12%"}}>
-                                {props.posts.length ?
-                                    <PostContainer user={props.user} prop={prop} posts={props.posts} handleDeletePost={props.handleDeletePost} authorized/>
+                                {posts.length ?
+                                    <PostContainer prop={prop} authorized/>
                                     :
                                     <Typography variant="subtitle2" color="secondary" className={classes.padLeft}>
                                         No Post found! Start creating one.

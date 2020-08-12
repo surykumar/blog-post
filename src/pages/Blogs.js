@@ -1,15 +1,11 @@
 import React from "react";
 import BlogContainerTemplate from "../Components/templates/BlogContainerTemplate";
+import {Grid} from "@material-ui/core";
 function Blogs(props) {
     return (
-        <div>
-            <BlogContainerTemplate user={props.user} posts={props.posts}
-                                   handleCreatePost={props.handleCreatePost}
-                                   handleEditPost={props.handleEditPost}
-                                   handleDeletePost={props.handleDeletePost}
-                                   handleUpdateProfile={props.handleUpdateProfile}
-            />
-        </div>
+        <Grid>
+            <BlogContainerTemplate />
+        </Grid>
     )
 }
 export default Blogs;

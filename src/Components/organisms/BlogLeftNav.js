@@ -5,6 +5,7 @@ import ProfileAvatar from "../atoms/ProfileAvatar";
 import Info from "../molecules/Info";
 import ConnectButtons from "../molecules/ConnectButtons";
 import BlogActionButtons from "../molecules/BlogActionButtons";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -35,20 +36,21 @@ const useStyles = makeStyles((theme)=>({
 
 function BlogLeftNav(props) {
     const classes = useStyles();
+    const user = useSelector(state=> state.user);
     return (
         <Box className={classes.root}>
             <Typography variant="h3" className={classes.title}>
-                {props.user.given_name}
+                {user.given_name}
             </Typography>
             <div className={classes.avatar}>
-                <ProfileAvatar picture={props.user.picture} name={`${props.user.given_name} ${props.user.family_name}`} />
+                <ProfileAvatar picture={user.picture} name={`${user.given_name} ${user.family_name}`} />
             </div>
             <div className={classes.info}>
-                <Info bio={props.user.bio}/>
+                <Info bio={user.bio}/>
             </div>
             <ConnectButtons/>
             <hr style={{width:"90%"}}/>
-            <BlogActionButtons user={props.user}/>
+            <BlogActionButtons user={user}/>
         </Box>
     )
 }

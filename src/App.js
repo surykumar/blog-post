@@ -127,7 +127,7 @@ function App() {
     }
   return (
       <MuiThemeProvider theme={theme}>
-        <Main _user={_user} allowLogin={false}/>
+        <Main/>
       </MuiThemeProvider>
   );
 }

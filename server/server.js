@@ -59,7 +59,7 @@ server.get('/posts',(req, res) => {
 })
 
 server.use(jsonServer.bodyParser)
-server.post('/users',(req, res) => {
+server.post('/users', (req, res) => {
     const user_email = req.body.id;
     const responseData = {};
     if(user_email == null) {
@@ -77,6 +77,60 @@ server.post('/users',(req, res) => {
     // }
     user = router.db.get('users').getById(user_email).value();
     res.status(200).send(user);
+
+})
+server.use(jsonServer.bodyParser)
+server.post('/posts', (req, res) => {
+    const user_email = req.body.user_id;
+    if(user_email == null) {
+        res.status(404).send({error: "Email id is missing in your post body"});
+    }
+    req.body.createdAt = Date.now();
+    req.body.id = uuidv4();
+    router.db.get('posts').insert(req.body).value();
+    router.db.write();
+    const user = router.db.get('users').getById(user_email).value();
+    if(user == null) {
+        res.status(404).send({error: "User not found in database"});
+    }
+    const _user = {
+        given_name: user.given_name,
+        family_name: user.family_name,
+        picture:user.picture,
+        uuid:user.uuid,
+        id:user.id
+    }
+    let post = router.db.get('posts').getById(req.body.id).value();
+    let returnObject = {};
+    returnObject = JSON.parse(JSON.stringify(post));
+    returnObject['user'] = _user;
+    res.status(200).send(returnObject);
+
+})
+server.use(jsonServer.bodyParser)
+server.put('/posts', (req, res) => {
+    const user_email = req.body.user_id;
+    if(user_email == null) {
+        res.status(404).send({error: "Email id is missing in your post body"});
+    }
+    router.db.get('posts').updateById(req.body.id, req.body).value();
+    router.db.write();
+    const user = router.db.get('users').getById(user_email).value();
+    if(user == null) {
+        res.status(404).send({error: "User not found in database"});
+    }
+    const _user = {
+        given_name: user.given_name,
+        family_name: user.family_name,
+        picture:user.picture,
+        uuid:user.uuid,
+        id:user.id
+    }
+    let post = router.db.get('posts').getById(req.body.id).value();
+    let returnObject = {};
+    returnObject = JSON.parse(JSON.stringify(post));
+    returnObject['user'] = _user;
+    res.status(200).send(returnObject);
 
 })
 // server.use(jsonServer.bodyParser)

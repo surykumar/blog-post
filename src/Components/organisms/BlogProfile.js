@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Grid, Typography} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
@@ -6,6 +6,9 @@ import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import ProfileImageUpload from "../molecules/ProfileImageUpload";
 import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {updateProfile} from "../../actions/userActions";
+import {fetchPosts} from "../../actions/postActions";
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "50%",
@@ -54,11 +57,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 const BlogProfile = (props) => {
     let { userId } = useParams();
-    const [firstName, setFirstName] = useState(props.user.given_name);
-    const [lastName, setLastName] = useState(props.user.family_name);
-    const [bio, setBio] = useState(props.user.bio);
-    const [profileUrl, setProfileUrl] = useState(props.user.picture);
-    // const [email, setL] = useState(props.user.family_name);
+    const user = useSelector(state=> state.user);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [bio, setBio] = useState("");
+    const [profileUrl, setProfileUrl] = useState("");
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        setFirstName(user.given_name ? user.given_name : "");
+        setLastName(user.family_name ? user.family_name : "");
+        setBio(user.bio ? user.bio : "");
+        setProfileUrl(user.picture ? user.picture :"");
+    },[user])
+
     const handleTextAreaChange= (e)=> {
         e.preventDefault();
         setBio(e.target.value);
@@ -72,9 +84,21 @@ const BlogProfile = (props) => {
             setProfileUrl(reader.result);
         }
     };
-    const handleUpdateProfile = (e)=> {
-        props.handleUpdateProfile(e, profileUrl);
+    const handleUpdateProfile = async (event)=> {
+        event.preventDefault();
+        // props.handleUpdateProfile(e, profileUrl);
+
+        const _user = {
+            given_name: firstName,
+            family_name: lastName,
+            bio: bio,
+            picture: profileUrl,
+            uuid: user.uuid,
+            id:user.id
+        };
+        await dispatch(updateProfile(_user));
         setTimeout(()=>{
+            dispatch(fetchPosts(user.id));
             props.history.push(`/blogs/${userId}`);
         });
     }
@@ -84,7 +108,7 @@ const BlogProfile = (props) => {
                 <Container maxWidth="xl">
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={handleUpdateProfile}>
                         <Grid className={classes.inlineDisplay}>
-                            <ProfileImageUpload profileUrl={profileUrl} user={props.user} handleImageChange={handleImageChange}/>
+                            <ProfileImageUpload profileUrl={profileUrl} handleImageChange={handleImageChange}/>
                             <TextareaAutosize value={bio} id="bio" required className={classes.textAreaField} aria-label="minimum height"
                                               rowsMin={3} placeholder="Write something about yourself!" onChange={handleTextAreaChange}/>
                         </Grid>
@@ -96,7 +120,6 @@ const BlogProfile = (props) => {
                                 variant="outlined"
                                 required
                                 id="firstName"
-                                // label="First Name"
                                 name="firstName"
                                 onChange={(e)=>{setFirstName(e.target.value)}}
                                 size="small"
@@ -119,7 +142,7 @@ const BlogProfile = (props) => {
                             <Typography style={{width:"15rem"}}>Email: </Typography>
                             <TextField
                                 className={classes.textField}
-                                value={props.user.id}
+                                value={user.id}
                                 variant="outlined"
                                 disabled
                                 id="email"

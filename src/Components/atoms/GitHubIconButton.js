@@ -2,6 +2,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import GitHubIcon from '@material-ui/icons/GitHub';
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     icon: {

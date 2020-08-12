@@ -46,7 +46,7 @@ describe("React Blog cypress Test",()=>{
                     cy.get('input#1-email')
                         .type("suryakantkumar4455@gmail.com");
                     cy.get('input.auth0-lock-input[type="password"]')
-                        .type("Heartbit@14");
+                        .type("*********");
                     cy.get('button.auth0-lock-submit').click();
                 }
                 cy.get('.MuiTabs-flexContainer').contains("Blog").click();

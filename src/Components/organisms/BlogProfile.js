@@ -61,6 +61,7 @@ const BlogProfile = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [bio, setBio] = useState("");
+    const [githubLink, setGithubLink] = useState("");
     const [profileUrl, setProfileUrl] = useState("");
     const dispatch = useDispatch();
 
@@ -68,6 +69,7 @@ const BlogProfile = (props) => {
         setFirstName(user.given_name ? user.given_name : "");
         setLastName(user.family_name ? user.family_name : "");
         setBio(user.bio ? user.bio : "");
+        setGithubLink(user.github ? user.github : "");
         setProfileUrl(user.picture ? user.picture :"");
     },[user])
 
@@ -86,14 +88,13 @@ const BlogProfile = (props) => {
     };
     const handleUpdateProfile = async (event)=> {
         event.preventDefault();
-        // props.handleUpdateProfile(e, profileUrl);
-
         const _user = {
             given_name: firstName,
             family_name: lastName,
             bio: bio,
             picture: profileUrl,
             uuid: user.uuid,
+            github: githubLink,
             id:user.id
         };
         await dispatch(updateProfile(_user));
@@ -135,6 +136,19 @@ const BlogProfile = (props) => {
                                 id="lastName"
                                 onChange={(e)=>{setLastName(e.target.value)}}
                                 name="lastName"
+                                size="small"
+                            />
+                        </Grid>
+                        <Grid className={classes.inlineDisplay}>
+                            <Typography style={{width:"15rem"}}>Github: </Typography>
+                            <TextField
+                                className={classes.textField}
+                                value={githubLink}
+                                variant="outlined"
+                                required
+                                id="github"
+                                onChange={(e)=>{setGithubLink(e.target.value)}}
+                                name="github"
                                 size="small"
                             />
                         </Grid>

@@ -11,6 +11,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {useDispatch, useSelector} from "react-redux";
 import {createPost, editPost} from "../../actions/postActions";
+import QuillEditor from "./QuillEditor";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -81,18 +82,15 @@ function CreatePost(props) {
 
     const handleCreatePost= (e, imagePreviewUrl)=> {
         e.preventDefault();
-        const body = getBody(e, imagePreviewUrl);
+        const body = getBody(e);
         if(props.edit) {
             body['id'] = postId;
             dispatch(editPost(body));
-            // props.handleEditPost(e,post.id, imagePreviewUrl);
         }
         else {
             dispatch(createPost(body));
-            // props.handleCreatePost(e, imagePreviewUrl);
         }
         setTimeout(()=>{
-            // props.history.push(`/blogs/${props.user.uuid}`);
             props.history.push(`/blogs/${userId}`);
         });
     }
@@ -112,11 +110,11 @@ function CreatePost(props) {
         setPostBody(e.target.value);
     }
 
-    const getBody = (event, imagePreviewUrl)=> {
+    const getBody = (event)=> {
         let _body = {
             "user_id": user.id,
-            "title": event.target['post_title']['value'],
-            "text": event.target['post_body']['value'],
+            "title": postTitle,
+            "text": postBody,
             "image": imagePreviewUrl ? imagePreviewUrl: "",
             "comments" : [
                 {
@@ -133,10 +131,14 @@ function CreatePost(props) {
         }
         return _body;
     }
+    const handleQuillBodyChange = (value)=> {
+        setPostBody(value);
+    }
 
     return (
         <div>
             <Container maxWidth="xl">
+
             <form className={classes.root} noValidate autoComplete="off" onSubmit={(e)=>handleCreatePost(e, imagePreviewUrl)}>
                 <div className={classes.body}>
                 <TextField
@@ -156,48 +158,51 @@ function CreatePost(props) {
                 />
                 </div>
                 <div className={classes.body}>
-                <TextareaAutosize value={postBody} id="post_body" required className={classes.textAreaField} aria-label="minimum height"
-                                  rowsMin={20} placeholder="Start writing your post here. Add images and more." onChange={handleTextAreaChange}/>
+                    <QuillEditor text={postBody} handleChange={handleQuillBodyChange}/>
                 </div>
-                <div className={classes.body}>
-                    <div className="imgPreview">
-                        {imagePreviewUrl &&
-                            <img className={classes.imgPreview} src={imagePreviewUrl}/>
+                {/*<div className={classes.body}>*/}
+                {/*<TextareaAutosize value={postBody} id="post_body" required className={classes.textAreaField} aria-label="minimum height"*/}
+                {/*                  rowsMin={20} placeholder="Start writing your post here. Add images and more." onChange={handleTextAreaChange}/>*/}
+                {/*</div>*/}
+                {/*<div className={classes.body}>*/}
+                {/*    <div className="imgPreview">*/}
+                {/*        {imagePreviewUrl &&*/}
+                {/*            <img className={classes.imgPreview} src={imagePreviewUrl}/>*/}
 
-                        }
-                    </div>
-                </div>
-                <div className={classes.body}>
-                    <hr/>
-                    <div>
-                        <input
-                            style={{ display: 'none' }}
-                            accept="image/*"
-                            className={classes.input}
-                            id="post_image"
-                            type="file"
-                            onChange={_handleImageChange}
-                            onClick={event => {
-                                event.target.value = null;
-                            }}
-                        />
-                        <label htmlFor="post_image">
-                            {imagePreviewUrl ?
-                                <IconButton aria-label="Clear Image" className={classes.icon} onClick={handleClearImage}>
-                                    <CancelIcon color="primary"/>
-                                </IconButton>
-                                :
-                                <IconButton aria-label="Image upload" component="span" className={classes.icon}>
-                                    <CameraAltIcon color="primary"/>
-                                </IconButton>
-                            }
-                        </label>
-                        <IconButton aria-label="add code snippet" className={classes.icon}>
-                            <CodeIcon aria-label="Image upload" />
-                        </IconButton>
-                    </div>
-                    <hr/>
-                </div>
+                {/*        }*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                {/*<div className={classes.body}>*/}
+                {/*    <hr/>*/}
+                {/*    <div>*/}
+                {/*        <input*/}
+                {/*            style={{ display: 'none' }}*/}
+                {/*            accept="image/*"*/}
+                {/*            className={classes.input}*/}
+                {/*            id="post_image"*/}
+                {/*            type="file"*/}
+                {/*            onChange={_handleImageChange}*/}
+                {/*            onClick={event => {*/}
+                {/*                event.target.value = null;*/}
+                {/*            }}*/}
+                {/*        />*/}
+                {/*        <label htmlFor="post_image">*/}
+                {/*            {imagePreviewUrl ?*/}
+                {/*                <IconButton aria-label="Clear Image" className={classes.icon} onClick={handleClearImage}>*/}
+                {/*                    <CancelIcon color="primary"/>*/}
+                {/*                </IconButton>*/}
+                {/*                :*/}
+                {/*                <IconButton aria-label="Image upload" component="span" className={classes.icon}>*/}
+                {/*                    <CameraAltIcon color="primary"/>*/}
+                {/*                </IconButton>*/}
+                {/*            }*/}
+                {/*        </label>*/}
+                {/*        <IconButton aria-label="add code snippet" className={classes.icon}>*/}
+                {/*            <CodeIcon aria-label="Image upload" />*/}
+                {/*        </IconButton>*/}
+                {/*    </div>*/}
+                {/*    <hr/>*/}
+                {/*</div>*/}
                 <div className={classes.body}>
                     <Button disabled={!postTitle.length} type="submit" variant="contained" color="primary">
                         {props.edit ? "Save": "Publish"}

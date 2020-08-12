@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import PostComments from "./PostComments";
 import {useSelector} from "react-redux";
+import {Grid} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +27,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(3),
         display:"flex",
-        textAlign:"justify"
+        textAlign:"justify",
+        '& img':{
+            width:"100%",
+            height: "100%"
+        }
     }
 }));
 
@@ -75,16 +80,17 @@ function PostPreview(props) {
                     </div>
                     <div className={classes.body}>
                         <Typography color="secondary" variant="body1">
-                            {post.text}
+                        <Grid dangerouslySetInnerHTML={{__html: post.text}}></Grid>
+                        {/*{post.text}*/}
                         </Typography>
                     </div>
-                    <div className={classes.body}>
-                        <div style={{width:"100%"}}>
-                            {post.image &&
-                                <img className={classes.imgPreview} src={post.image}/>
-                            }
-                        </div>
-                    </div>
+                    {/*<div className={classes.body}>*/}
+                    {/*    <div style={{width:"100%"}}>*/}
+                    {/*        {post.image &&*/}
+                    {/*            <img className={classes.imgPreview} src={post.image}/>*/}
+                    {/*        }*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                     <PostComments post={post}/>
                 </form>
             </Container>

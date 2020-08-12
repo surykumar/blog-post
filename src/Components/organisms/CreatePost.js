@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import CodeIcon from '@material-ui/icons/Code';
 import CancelIcon from '@material-ui/icons/Cancel';
+import {useDispatch, useSelector} from "react-redux";
+import {createPost, editPost} from "../../actions/postActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,11 +52,23 @@ const useStyles = makeStyles((theme) => ({
 
 function CreatePost(props) {
     let { postId, userId } = useParams();
-    const post = props.edit && props.posts.find(data=>data.id==postId);
-    const [imagePreviewUrl, setImagePreviewUrl] = useState(props.edit ? post.image : "");
-    const [postTitle, setPostTitle] = useState(props.edit ? post.title:"");
-    const [postBody, setPostBody] = useState(props.edit ? post.text : "");
+    const posts = useSelector(state=> state.posts);
+    const [imagePreviewUrl, setImagePreviewUrl] = useState( "");
+    const [postTitle, setPostTitle] = useState("");
+    const [postBody, setPostBody] = useState("");
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const user = useSelector(state=> state.user);
+
+    useEffect(()=>{
+        const post = posts.find(data=>data.id==postId);
+        if(props.edit && post) {
+            setImagePreviewUrl(post.image);
+            setPostTitle(post.title);
+            setPostBody(post.text);
+        }
+    },[posts])
+
     const _handleImageChange = function(event) {
         event.preventDefault();
         let file = event.target.files[0];
@@ -67,11 +81,15 @@ function CreatePost(props) {
 
     const handleCreatePost= (e, imagePreviewUrl)=> {
         e.preventDefault();
+        const body = getBody(e, imagePreviewUrl);
         if(props.edit) {
-            props.handleEditPost(e,post.id, imagePreviewUrl);
+            body['id'] = postId;
+            dispatch(editPost(body));
+            // props.handleEditPost(e,post.id, imagePreviewUrl);
         }
         else {
-            props.handleCreatePost(e, imagePreviewUrl);
+            dispatch(createPost(body));
+            // props.handleCreatePost(e, imagePreviewUrl);
         }
         setTimeout(()=>{
             // props.history.push(`/blogs/${props.user.uuid}`);
@@ -92,6 +110,28 @@ function CreatePost(props) {
     const handleTextAreaChange= (e)=> {
         e.preventDefault();
         setPostBody(e.target.value);
+    }
+
+    const getBody = (event, imagePreviewUrl)=> {
+        let _body = {
+            "user_id": user.id,
+            "title": event.target['post_title']['value'],
+            "text": event.target['post_body']['value'],
+            "image": imagePreviewUrl ? imagePreviewUrl: "",
+            "comments" : [
+                {
+                    "user_id": "",
+                    "comment": "",
+                    "replies": [
+                        {
+                            "user_id": "",
+                            "reply" : ""
+                        }
+                    ]
+                }
+            ]
+        }
+        return _body;
     }
 
     return (

@@ -7,6 +7,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { useAuth0 } from "@auth0/auth0-react";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const useStyle = makeStyles((theme)=>({
     root: {
@@ -29,7 +30,7 @@ const useStyle = makeStyles((theme)=>({
 function Header(props) {
     const { isAuthenticated } = useAuth0();
     const [value, setValue] = React.useState(0);
-
+    const user = useSelector(state=> state.user);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -39,9 +40,7 @@ function Header(props) {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    const handleTabChange = (e)=> {
-        e.preventDefault();
-    }
+
     const classes = useStyle();
     return (
             <AppBar  position="fixed" className={classes.root}>
@@ -49,7 +48,7 @@ function Header(props) {
                     <Tabs style={{position: "absolute"}} indicatorColor="neutral" value={value} onChange={handleChange} aria-label="simple tabs example">
                         <Tab label="Home" component={Link} to="/" disableRipple {...a11yProps(0)} />
                         {isAuthenticated &&
-                            <Tab label="Blog" component={Link} to={`/blogs/${props.user.uuid}`} disableRipple />
+                            <Tab label="Blog" component={Link} to={`/blogs/${user.uuid}`} disableRipple {...a11yProps(1)}/>
                         }
                     </Tabs>
                     <div style={{width:"100%"}}>

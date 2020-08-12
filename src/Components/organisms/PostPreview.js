@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import PostComments from "./PostComments";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
 function PostPreview(props) {
     const classes = useStyles();
     let { postId } = useParams();
-    const post = props.posts.find(data=>data.id==postId);
+    const posts = useSelector(state=> state.posts);
+    const post = posts.find(data=>data.id==postId);
     if(!post) {
-        return;
+        return null;
     }
     const getCurrentDate = (data)=> {
         const d = new Date(data);
@@ -57,7 +59,7 @@ function PostPreview(props) {
                             {post.user.given_name.slice(0,1)}
                         </Avatar>
                         <Typography color="secondary" variant="body1" style={{paddingLeft:"12px", width:"100%"}}>
-                            <Typography style={{display:"flex"}}>
+                            <Typography style={{display:"flex", textTransform:"capitalize"}}>
                                 {post.user.given_name }
                                 <Typography variant="body2" color="primary" style={{padding:"3px", width:"100%", textAlign:"end"}}>
                                     {averageReadingTime(post.text)} minute read . {"Characters"}: {post.text.length}

@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../organisms/Header";
 import { makeStyles } from '@material-ui/core/styles';
 import BlogLeftNav from "../organisms/BlogLeftNav";
 import {Grid} from "@material-ui/core";
@@ -16,14 +15,9 @@ function BlogContainerTemplate(props) {
     const classes = useStyles();
     return (
         <Grid>
-            <BlogLeftNav user={ props.user }/>
+            <BlogLeftNav/>
             <div className={classes.body}>
-                <BlogBody user={props.user} posts={props.posts}
-                          handleCreatePost={props.handleCreatePost}
-                          handleEditPost={props.handleEditPost}
-                          handleDeletePost={props.handleDeletePost}
-                          handleUpdateProfile={props.handleUpdateProfile}
-                />
+                <BlogBody />
             </div>
         </Grid>
     )

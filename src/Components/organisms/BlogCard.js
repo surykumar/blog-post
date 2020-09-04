@@ -9,20 +9,16 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { grey } from '@material-ui/core/colors';
-import {Link, useRouteMatch} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import {Grid} from "@material-ui/core";
-import {Router} from "@material-ui/icons";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {deletePost} from "../../actions/postActions";
-import Disqus from "disqus-react";
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import CommentCount from "../molecules/CommentCount";
 
@@ -130,6 +126,24 @@ function BlogCard(props) {
             handleClose();
         }
     }
+    const getParsedBody = (body)=> {
+        let div = document.createElement("div");
+        div.innerHTML = body;
+        let text = div.textContent || div.innerText || "";
+        if(text.length > 80) {
+            return text.slice(0,80) + " ..."
+        }
+        return text;
+    }
+    const getCardMediaFromPostBody = (body)=> {
+        if(!body) return IMAGE_NOT_AVAILABLE;
+        let div = document.createElement('div');
+        div.innerHTML = body;
+        let firstImage = div.getElementsByTagName('img')[0];
+        let imgSrc = firstImage ? firstImage.src : IMAGE_NOT_AVAILABLE;
+        return imgSrc;
+
+    }
     return (
         <Card className={classes.root}>
                 <CardHeader className={classes.header}
@@ -163,7 +177,8 @@ function BlogCard(props) {
                 />
                 <CardMedia
                     className={classes.media}
-                    image={post.image ? post.image :IMAGE_NOT_AVAILABLE}
+                    // image={post.image ? post.image :IMAGE_NOT_AVAILABLE}
+                    image={getCardMediaFromPostBody(post.text)}
                     title={post.title}
                 />
                 <CardContent style={{padding:"8px", height: "65px"}}>
@@ -174,10 +189,7 @@ function BlogCard(props) {
                         }
                     </Typography>
                     <Typography variant="body2" color="secondary">
-                        {post.text.length > 80 ?
-                            post.text.slice(0, 80) + " ..."
-                            : post.text
-                        }
+                        {getParsedBody(post.text)}
                     </Typography>
                 </CardContent>
             <Grid className={classes.header}>

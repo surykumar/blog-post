@@ -13,7 +13,7 @@ function PostComments(props){
     }
         return (
             <div className="article-container">
-                <CommentCount post={props.post}/>
+                {/*<CommentCount post={props.post}/>*/}
                 {/*<h1>Add your comment here</h1>*/}
                 {/*<p>Page content.</p>*/}
                 <Disqus.DiscussionEmbed

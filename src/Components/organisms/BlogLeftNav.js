@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme)=>({
         padding:"0 20%"
     },
     info : {
-        marginTop: "5%",
+        margin: "5%",
         fontSize: "0.875rem"
     }
     })

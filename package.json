@@ -10,7 +10,7 @@
     "@sambego/storybook-styles": "^1.0.0",
     "@storybook/addon-knobs": "^5.3.19",
     "@testing-library/jest-dom": "^5.11.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "disqus-react": "^1.0.9",
     "json-server": "^0.16.1",
